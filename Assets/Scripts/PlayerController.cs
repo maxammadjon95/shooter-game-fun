@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private Transform _cameraTransform;
 
     private Vector3 _moveInput;
 
@@ -15,5 +16,17 @@ public class PlayerController : MonoBehaviour
         _moveInput.z = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
 
         _characterController.Move(_moveInput);
+
+        //camera part
+        Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+
+        //for player rotation
+        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
+            transform.rotation.eulerAngles.y + mouseInput.x,
+            transform.rotation.eulerAngles.z);
+
+        //for camera rotation
+        _cameraTransform.rotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles 
+                                                    + new Vector3(-mouseInput.y, 0f, 0f));
     }
 }
