@@ -868,6 +868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 5
   _characterController: {fileID: 913202758}
+  _cameraTransform: {fileID: 963194228}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
