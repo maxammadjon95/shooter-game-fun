@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed;
+    [SerializeField] private float _gravityModifier;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private float _mouseSensitivity;
@@ -19,12 +20,25 @@ public class PlayerController : MonoBehaviour
         //_moveInput.x = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
         //_moveInput.z = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
 
+        //store y velocity
+        float yStore = _moveInput.y;
+
         Vector3 vectorMoveVertical = transform.forward * Input.GetAxis("Vertical");
         Vector3 vectorMoveHorizontal = transform.right * Input.GetAxis("Horizontal");
 
         _moveInput = vectorMoveVertical + vectorMoveHorizontal;
         _moveInput.Normalize();
-        _moveInput = _moveInput * _speed;
+        _moveInput *= _speed;
+
+        //Gravity logic
+        _moveInput.y = yStore;
+        _moveInput.y += Physics.gravity.y * _gravityModifier * Time.deltaTime;
+
+        //if player is on ground, gravity should not be stored
+        if(_characterController.isGrounded)
+        {
+            _moveInput.y = Physics.gravity.y * _gravityModifier * Time.deltaTime;
+        }
 
         _characterController.Move(_moveInput * Time.deltaTime);
 
