@@ -15,10 +15,18 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        _moveInput.x = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
-        _moveInput.z = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
+        //OLD moving logic
+        //_moveInput.x = Input.GetAxis("Horizontal") * _speed * Time.deltaTime;
+        //_moveInput.z = Input.GetAxis("Vertical") * _speed * Time.deltaTime;
 
-        _characterController.Move(_moveInput);
+        Vector3 vectorMoveVertical = transform.forward * Input.GetAxis("Vertical");
+        Vector3 vectorMoveHorizontal = transform.right * Input.GetAxis("Horizontal");
+
+        _moveInput = vectorMoveVertical + vectorMoveHorizontal;
+        _moveInput.Normalize();
+        _moveInput = _moveInput * _speed;
+
+        _characterController.Move(_moveInput * Time.deltaTime);
 
         //camera part
         Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * _mouseSensitivity;
