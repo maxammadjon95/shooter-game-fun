@@ -930,6 +930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
+  _gravityModifier: 2
   _characterController: {fileID: 913202758}
   _cameraTransform: {fileID: 166467103}
   _mouseSensitivity: 3
