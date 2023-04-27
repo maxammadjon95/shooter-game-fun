@@ -6,13 +6,19 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _gravityModifier;
+    [SerializeField] private float _jumpPower;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private float _mouseSensitivity;
     [SerializeField] private bool _invertX;
     [SerializeField] private bool _invertY;
+    [SerializeField] private Transform _groundCheckPoint;
+    [SerializeField] private LayerMask _whatIsGround;
 
     private Vector3 _moveInput;
+
+    private bool _canJump;
+
 
     private void Update()
     {
@@ -38,6 +44,15 @@ public class PlayerController : MonoBehaviour
         if(_characterController.isGrounded)
         {
             _moveInput.y = Physics.gravity.y * _gravityModifier * Time.deltaTime;
+        }
+
+        _canJump = Physics.OverlapSphere(_groundCheckPoint.position, 
+            0.25f, _whatIsGround).Length > 0;
+
+        //Jumping part
+        if(Input.GetKeyDown(KeyCode.Space) && _canJump)
+        {
+            _moveInput.y = _jumpPower;
         }
 
         _characterController.Move(_moveInput * Time.deltaTime);
