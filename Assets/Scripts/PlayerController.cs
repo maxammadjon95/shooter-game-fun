@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 _moveInput;
 
-    private bool _canJump;
+    private bool _canJump, _canDoubleJump;
 
 
     private void Update()
@@ -40,6 +40,7 @@ public class PlayerController : MonoBehaviour
         _moveInput.y = yStore;
         _moveInput.y += Physics.gravity.y * _gravityModifier * Time.deltaTime;
 
+        //JUMP logic
         //if player is on ground, gravity should not be stored
         if(_characterController.isGrounded)
         {
@@ -49,12 +50,23 @@ public class PlayerController : MonoBehaviour
         _canJump = Physics.OverlapSphere(_groundCheckPoint.position, 
             0.25f, _whatIsGround).Length > 0;
 
-        //Jumping part
+        //Handle Jump
         if(Input.GetKeyDown(KeyCode.Space) && _canJump)
         {
             _moveInput.y = _jumpPower;
+
+            //if we jumped, we can double jump
+            _canDoubleJump = true;
+        }
+        else if(Input.GetKeyDown(KeyCode.Space) && _canDoubleJump)
+        {
+            _moveInput.y = _jumpPower;
+
+            //if we double jumped, we can't jump anymore
+            _canDoubleJump = false;
         }
 
+        //CHARACTER MOVE
         _characterController.Move(_moveInput * Time.deltaTime);
 
         //camera part
@@ -69,12 +81,12 @@ public class PlayerController : MonoBehaviour
             mouseInput.y = -mouseInput.y;
         }
 
-        //for player rotation
+        //for player rotation on Mouse
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,
             transform.rotation.eulerAngles.y + mouseInput.x,
             transform.rotation.eulerAngles.z);
 
-        //for camera rotation
+        //for camera rotation on Mouse
         _cameraTransform.rotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles 
                                                     + new Vector3(-mouseInput.y, 0f, 0f));
     }
