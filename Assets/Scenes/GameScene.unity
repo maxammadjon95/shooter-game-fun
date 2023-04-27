@@ -875,6 +875,7 @@ GameObject:
   - component: {fileID: 913202757}
   - component: {fileID: 913202758}
   - component: {fileID: 913202759}
+  - component: {fileID: 913202760}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -930,9 +931,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad92c6c347ab22249af22f907c13730c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 10
+  _speed: 8
   _gravityModifier: 2
   _jumpPower: 10
+  _runSpeed: 14
   _characterController: {fileID: 913202758}
   _cameraTransform: {fileID: 166467103}
   _mouseSensitivity: 3
@@ -942,6 +944,28 @@ MonoBehaviour:
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  _animator: {fileID: 913202760}
+--- !u!95 &913202760
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913202756}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d5a6c402f1614954c80e6cc303b1655a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
