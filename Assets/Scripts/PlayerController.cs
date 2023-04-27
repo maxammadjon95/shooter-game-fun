@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -7,6 +5,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private float _gravityModifier;
     [SerializeField] private float _jumpPower;
+    [SerializeField] private float _runSpeed;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private float _mouseSensitivity;
@@ -14,6 +13,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool _invertY;
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _whatIsGround;
+    [SerializeField] private Animator _animator;
 
     private Vector3 _moveInput;
 
@@ -34,7 +34,16 @@ public class PlayerController : MonoBehaviour
 
         _moveInput = vectorMoveVertical + vectorMoveHorizontal;
         _moveInput.Normalize();
-        _moveInput *= _speed;
+
+        //RUN and MOVE logic
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            _moveInput *= _runSpeed;
+        }
+        else
+        {
+            _moveInput *= _speed;
+        }
 
         //Gravity logic
         _moveInput.y = yStore;
@@ -42,23 +51,23 @@ public class PlayerController : MonoBehaviour
 
         //JUMP logic
         //if player is on ground, gravity should not be stored
-        if(_characterController.isGrounded)
+        if (_characterController.isGrounded)
         {
             _moveInput.y = Physics.gravity.y * _gravityModifier * Time.deltaTime;
         }
 
-        _canJump = Physics.OverlapSphere(_groundCheckPoint.position, 
+        _canJump = Physics.OverlapSphere(_groundCheckPoint.position,
             0.25f, _whatIsGround).Length > 0;
 
         //Handle Jump
-        if(Input.GetKeyDown(KeyCode.Space) && _canJump)
+        if (Input.GetKeyDown(KeyCode.Space) && _canJump)
         {
             _moveInput.y = _jumpPower;
 
             //if we jumped, we can double jump
             _canDoubleJump = true;
         }
-        else if(Input.GetKeyDown(KeyCode.Space) && _canDoubleJump)
+        else if (Input.GetKeyDown(KeyCode.Space) && _canDoubleJump)
         {
             _moveInput.y = _jumpPower;
 
@@ -72,11 +81,11 @@ public class PlayerController : MonoBehaviour
         //camera part
         Vector2 mouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y")) * _mouseSensitivity;
 
-        if(_invertX)
+        if (_invertX)
         {
             mouseInput.x = -mouseInput.x;
         }
-        if(_invertY)
+        if (_invertY)
         {
             mouseInput.y = -mouseInput.y;
         }
@@ -87,7 +96,11 @@ public class PlayerController : MonoBehaviour
             transform.rotation.eulerAngles.z);
 
         //for camera rotation on Mouse
-        _cameraTransform.rotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles 
+        _cameraTransform.rotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles
                                                     + new Vector3(-mouseInput.y, 0f, 0f));
+
+        //Walking animation logic
+        _animator.SetFloat("moveSpeed", _moveInput.magnitude);
+        _animator.SetBool("isOnGround", _canJump);
     }
 }
