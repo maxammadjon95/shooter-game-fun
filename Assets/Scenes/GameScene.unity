@@ -1322,6 +1322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 15
   _rigidBody: {fileID: 925910020}
+  _lifeTime: 3
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
