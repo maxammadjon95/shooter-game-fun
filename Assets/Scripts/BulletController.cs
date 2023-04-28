@@ -13,6 +13,10 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.CompareTag("Enemy"))
+        {
+            Destroy(other.gameObject);
+        }
         Destroy(gameObject);
         var miniDistance = transform.forward * (-_moveSpeed * Time.deltaTime);
         Instantiate(_particleEffect, transform.position + miniDistance, transform.rotation);
