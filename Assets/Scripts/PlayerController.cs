@@ -14,12 +14,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private Animator _animator;
-    [SerializeField] private GameObject _bullet;
-    [SerializeField] private Transform _firePoint;
+    [SerializeField] private GunShooter _gunShooter;
+
 
     private Vector3 _moveInput;
 
     private bool _canJump, _canDoubleJump;
+
+    public Transform CameraTransform => _cameraTransform;
 
 
     private void Update()
@@ -104,7 +106,7 @@ public class PlayerController : MonoBehaviour
         //Shoot logic
         if(Input.GetMouseButtonDown(0))
         {
-            Instantiate(_bullet, _firePoint.position, _firePoint.rotation);
+            _gunShooter.TryFire();
         }
 
 
