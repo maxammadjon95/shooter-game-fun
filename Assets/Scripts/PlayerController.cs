@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _groundCheckPoint;
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private Animator _animator;
+    [SerializeField] private GameObject _bullet;
+    [SerializeField] private Transform _firePoint;
 
     private Vector3 _moveInput;
 
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
         _moveInput = vectorMoveVertical + vectorMoveHorizontal;
         _moveInput.Normalize();
-
+        
         //RUN and MOVE logic
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -98,6 +100,13 @@ public class PlayerController : MonoBehaviour
         //for camera rotation on Mouse
         _cameraTransform.rotation = Quaternion.Euler(_cameraTransform.rotation.eulerAngles
                                                     + new Vector3(-mouseInput.y, 0f, 0f));
+
+        //Shoot logic
+        if(Input.GetMouseButtonDown(0))
+        {
+            Instantiate(_bullet, _firePoint.position, _firePoint.rotation);
+        }
+
 
         //Walking animation logic
         _animator.SetFloat("moveSpeed", _moveInput.magnitude);
