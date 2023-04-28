@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3571679743554274795}
   - component: {fileID: 3571679743554274794}
   - component: {fileID: 5172361569495299292}
+  - component: {fileID: 8133491361219965622}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -114,7 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 15
   _rigidBody: {fileID: 3571679743554274794}
-  _lifeTime: 3
   _particleEffect: {fileID: 3860162676726737062, guid: dfcb6c7ce036f8c4e91bd0ee78c0390b, type: 3}
 --- !u!54 &3571679743554274794
 Rigidbody:
@@ -240,3 +240,16 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!114 &8133491361219965622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3571679743554273809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1bdbb6d1d42a70428ef39530468a2f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lifeTime: 3
