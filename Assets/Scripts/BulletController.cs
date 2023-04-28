@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private float _lifeTime;
+    [SerializeField] private GameObject _particleEffect;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Instantiate(_particleEffect, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 }
