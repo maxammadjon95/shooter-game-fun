@@ -26,7 +26,8 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Instantiate(_particleEffect, transform.position, transform.rotation);
         Destroy(gameObject);
+        var miniDistance = transform.forward * (-_moveSpeed * Time.deltaTime);
+        Instantiate(_particleEffect, transform.position + miniDistance, transform.rotation);
     }
 }
