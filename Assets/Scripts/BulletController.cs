@@ -5,6 +5,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private GameObject _particleEffect;
+    [SerializeField] private int _damageCount = 1;
 
     private void Update()
     {
@@ -15,9 +16,14 @@ public class BulletController : MonoBehaviour
     {
         if(other.CompareTag("Enemy"))
         {
-            Destroy(other.gameObject);
+            var healthController = other.GetComponent<EnemyHealthController>();
+            if(healthController != null)
+            {
+                healthController.DamageToHealth(_damageCount);
+            }
         }
-        Destroy(gameObject);
+
+        //Effect part
         var miniDistance = transform.forward * (-_moveSpeed * Time.deltaTime);
         Instantiate(_particleEffect, transform.position + miniDistance, transform.rotation);
     }
