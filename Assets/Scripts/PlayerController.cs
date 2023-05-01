@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+
     [SerializeField] private float _speed;
     [SerializeField] private float _gravityModifier;
     [SerializeField] private float _jumpPower;
@@ -23,6 +25,10 @@ public class PlayerController : MonoBehaviour
 
     public Transform CameraTransform => _cameraTransform;
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Update()
     {
