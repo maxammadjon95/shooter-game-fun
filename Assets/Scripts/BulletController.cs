@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour
     [SerializeField] private Rigidbody _rigidBody;
     [SerializeField] private GameObject _particleEffect;
     [SerializeField] private int _damageCount = 1;
+    [SerializeField] private PlayerType _playerType;
 
     private void Update()
     {
@@ -14,13 +15,21 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Enemy"))
+        if(_playerType == PlayerType.Player)
         {
-            var healthController = other.GetComponent<EnemyHealthController>();
-            if(healthController != null)
+            if (other.CompareTag("Enemy"))
             {
-                healthController.DamageToHealth(_damageCount);
+                var healthController = other.GetComponent
+                    <EnemyHealthController>();
+                if (healthController != null)
+                {
+                    healthController.DamageToHealth(_damageCount);
+                }
             }
+        }
+        if(_playerType == PlayerType.Enemy)
+        {
+            Debug.Log("Enemy Hitted Us");
         }
 
         //Effect part
