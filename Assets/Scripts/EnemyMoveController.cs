@@ -11,10 +11,11 @@ public class EnemyMoveController : MonoBehaviour
 
     private bool _isChasing;
     private PlayerController _player;
-    private Vector3 _targetPoint;
+    private Vector3 _targetPoint, _startPoint;
 
     private void Start()
     {
+        _startPoint = transform.position;
         _player = PlayerController.instance;
     }
 
@@ -26,11 +27,12 @@ public class EnemyMoveController : MonoBehaviour
         if (!_isChasing)
         {
             CheckToChase();
+            MoveToInitialPosition();
         }
         else
         {
-            MoveToTarget();
             CheckToLose();
+            MoveToTarget();
         }
     }
 
@@ -56,9 +58,11 @@ public class EnemyMoveController : MonoBehaviour
 
     private void MoveToTarget()
     {
-        //transform.LookAt(_targetPoint);
-        //_rigidbody.velocity = transform.forward * _moveSpeed;
-
         _agent.destination = _targetPoint;
+    }
+
+    private void MoveToInitialPosition()
+    {
+        _agent.destination = _startPoint;
     }
 }
