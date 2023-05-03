@@ -3093,7 +3093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d54db4366e93c47439ba636085c45e8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealthCount: 5
+  _maxHealthCount: 10
   _indicator: {fileID: 1983187147}
 --- !u!114 &1474350178
 MonoBehaviour:
@@ -3108,10 +3108,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 5
-  _rigidbody: {fileID: 0}
   _distanceToChase: 10
   _distanceToLose: 20
   _agent: {fileID: 1474350179}
+  _keepChasingTime: 10
 --- !u!195 &1474350179
 NavMeshAgent:
   m_ObjectHideFlags: 0
