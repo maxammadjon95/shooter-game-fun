@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,16 +13,16 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField] private float _keepChasingTime = 3f;
     [SerializeField] private Transform _emptyPoint;
     [SerializeField] private EnemyGunShooter _gun;
+    [SerializeField] private float _shotRate = 0.5f;
 
-    private bool _isChasing;
+    private bool _isChasing, _isShooting;
     private PlayerController _player;
     private Vector3 _targetPoint, _startPoint;
 
     private bool _justLostPlayer, _tooNear;
-
     private float _distanceFromPlayer;
 
-    private Tweener _waitTweener;
+    private Tweener _waitTweener, _shotRateTweener;
 
 
     private void Start()
@@ -57,7 +58,10 @@ public class EnemyMoveController : MonoBehaviour
             {
                 MoveToTarget();
             }
-            //_gun.TryFire();
+            if(!_isShooting)
+            {
+                Shot();
+            }
         }
     }
 
@@ -108,6 +112,18 @@ public class EnemyMoveController : MonoBehaviour
             () =>
             {
                 MoveToInitialPosition();
+            });
+    }
+
+    private void Shot()
+    {
+        _isShooting = true;
+        _gun.TryFire();
+        _shotRateTweener?.Kill();
+        _shotRateTweener = _emptyPoint.DOMoveX(0, _shotRate).OnComplete(
+            () =>
+            {
+                _isShooting = false;
             });
     }
 
