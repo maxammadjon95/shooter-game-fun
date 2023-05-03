@@ -1,17 +1,27 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyMoveController : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _distanceToChase = 10f;
     [SerializeField] private float _distanceToLose = 20f;
+    [SerializeField] private float _distanceToStop = 2f;
     [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private float _keepChasingTime = 3f;
+    [SerializeField] private Transform _emptyPoint;
 
     private bool _isChasing;
     private PlayerController _player;
     private Vector3 _targetPoint, _startPoint;
+
+    private bool _justLostPlayer, _tooNear;
+
+    private float _distanceFromPlayer;
+
+    private Tweener _waitTweener;
+
 
     private void Start()
     {
@@ -24,36 +34,52 @@ public class EnemyMoveController : MonoBehaviour
         _targetPoint = _player.transform.position;
         _targetPoint.y = transform.position.y;
 
+        _distanceFromPlayer = Vector3.Distance(transform.position, _targetPoint);
+
         if (!_isChasing)
         {
+            if (_justLostPlayer)
+            {
+                WaitAndGoToInitialPosition();
+            }
             CheckToChase();
-            MoveToInitialPosition();
         }
         else
         {
             CheckToLose();
-            MoveToTarget();
+            CheckToStop();
+            if(_tooNear)
+            {
+                StopMoving();
+            }
+            else
+            {
+                MoveToTarget();
+            }
         }
     }
 
     private void CheckToChase()
     {
-        var distanceFromPlayer = Vector3.Distance(transform.position,
-            _targetPoint);
-        if(distanceFromPlayer < _distanceToChase) 
-        { 
+        if (_distanceFromPlayer < _distanceToChase)
+        {
             _isChasing = true;
+            BreakWaiting();
         }
     }
 
     private void CheckToLose()
     {
-        var distanceFromPlayer = Vector3.Distance(transform.position,
-            _targetPoint);
-        if (distanceFromPlayer > _distanceToLose)
+        if (_distanceFromPlayer > _distanceToLose)
         {
+            _justLostPlayer = true;
             _isChasing = false;
         }
+    }
+
+    private void CheckToStop()
+    {
+        _tooNear = _distanceFromPlayer < _distanceToStop;
     }
 
     private void MoveToTarget()
@@ -64,5 +90,28 @@ public class EnemyMoveController : MonoBehaviour
     private void MoveToInitialPosition()
     {
         _agent.destination = _startPoint;
+    }
+
+    private void StopMoving()
+    {
+        _agent.destination = transform.position;
+    }
+
+    private void WaitAndGoToInitialPosition()
+    {
+        _justLostPlayer = false;
+        StopMoving();
+        _waitTweener?.Kill();
+        _waitTweener = _emptyPoint.DOMoveX(0, _keepChasingTime).OnComplete(
+            () =>
+            {
+                MoveToInitialPosition();
+            });
+    }
+
+    private void BreakWaiting()
+    {
+        _justLostPlayer = false;
+        _waitTweener?.Kill();
     }
 }
