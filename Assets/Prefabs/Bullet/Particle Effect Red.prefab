@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3860162676726737063}
   - component: {fileID: 4302567409465023649}
   m_Layer: 0
-  m_Name: Particle Effect
+  m_Name: Particle Effect Red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4829,7 +4829,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: edd82f7c117eafe468be285a8a05825b, type: 2}
+  - {fileID: 2100000, guid: 159a200f04cd2c74f80e2813711e77f6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
