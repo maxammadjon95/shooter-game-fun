@@ -38,6 +38,7 @@ public class EnemyHealthController : MonoBehaviour
     private void IndicatorMove()
     {
         _indicatorTween?.Kill();
-        _indicatorTween = _indicator.transform.parent.DOPunchScale(new Vector3(.06f, .06f, .06f), 1f, 2, 0.2f);
+        _indicatorTween = _indicator.transform.parent.DOPunchScale(
+            new Vector3(.06f, .06f, .06f), 1f, 2, 0.2f);
     }
 }
