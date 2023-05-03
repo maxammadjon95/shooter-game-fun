@@ -11,6 +11,7 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField] private NavMeshAgent _agent;
     [SerializeField] private float _keepChasingTime = 3f;
     [SerializeField] private Transform _emptyPoint;
+    [SerializeField] private EnemyGunShooter _gun;
 
     private bool _isChasing;
     private PlayerController _player;
@@ -56,6 +57,7 @@ public class EnemyMoveController : MonoBehaviour
             {
                 MoveToTarget();
             }
+            //_gun.TryFire();
         }
     }
 
