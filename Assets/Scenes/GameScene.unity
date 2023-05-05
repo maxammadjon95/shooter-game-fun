@@ -3311,6 +3311,9 @@ MonoBehaviour:
   _keepChasingTime: 3
   _emptyPoint: {fileID: 680885500}
   _gun: {fileID: 836794446}
+  _shotRate: 0.5
+  _fireCount: 3
+  _timeBetweenShots: 3
 --- !u!195 &1474350179
 NavMeshAgent:
   m_ObjectHideFlags: 0
