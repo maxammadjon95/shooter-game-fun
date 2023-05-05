@@ -13,22 +13,27 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField] private float _keepChasingTime = 3f;
     [SerializeField] private Transform _emptyPoint;
     [SerializeField] private EnemyGunShooter _gun;
-    [SerializeField] private float _shotRate = 0.5f;
+    [SerializeField] private float _shotRate = 0.3f;
+    [SerializeField] private int _fireCount = 3;
+    [SerializeField] private float _timeBetweenShots = 3f;
 
-    private bool _isChasing, _isShooting;
+    private bool _isChasing, _isWaitingForShot, _isShooting;
     private PlayerController _player;
     private Vector3 _targetPoint, _startPoint;
 
     private bool _justLostPlayer, _tooNear;
     private float _distanceFromPlayer;
 
-    private Tweener _waitTweener, _shotRateTweener;
+    private Tweener _waitTweener;
+    private Tweener _shotContinuationTweener;
 
+    private WaitForSeconds _rateWaiter;
 
     private void Start()
     {
         _startPoint = transform.position;
         _player = PlayerController.instance;
+        _rateWaiter = new WaitForSeconds(_shotRate);
     }
 
     private void Update()
@@ -50,17 +55,19 @@ public class EnemyMoveController : MonoBehaviour
         {
             CheckToLose();
             CheckToStop();
+
             if(_tooNear)
             {
                 StopMoving();
             }
-            else
+            else if(!_isShooting)
             {
                 MoveToTarget();
             }
-            if(!_isShooting)
+
+            if(!_isWaitingForShot)
             {
-                Shot();
+               BeginWaitingForShot();
             }
         }
     }
@@ -115,15 +122,28 @@ public class EnemyMoveController : MonoBehaviour
             });
     }
 
-    private void Shot()
+    private IEnumerator ShotCoroutine()
     {
         _isShooting = true;
-        _gun.TryFire();
-        _shotRateTweener?.Kill();
-        _shotRateTweener = _emptyPoint.DOMoveX(0, _shotRate).OnComplete(
+        for (int i = 0; i < _fireCount; i++)
+        {
+            _gun.TryFire();
+            yield return _rateWaiter;
+        }
+        _isWaitingForShot = false;
+        _isShooting = false;
+        MoveToTarget();
+    }
+
+    private void BeginWaitingForShot()
+    {
+        _isWaitingForShot = true;
+        _shotContinuationTweener?.Kill();
+        _shotContinuationTweener = _emptyPoint.DOMoveX(0, _timeBetweenShots).OnComplete(
             () =>
             {
-                _isShooting = false;
+                StopMoving();
+                StartCoroutine(ShotCoroutine());
             });
     }
 
