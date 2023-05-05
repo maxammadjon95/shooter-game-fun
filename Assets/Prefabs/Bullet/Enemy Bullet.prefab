@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f617988c86e82d3409da64b4c7024cc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 20
+  _moveSpeed: 30
   _rigidBody: {fileID: 3571679743554274794}
   _particleEffect: {fileID: 3860162676726737062, guid: 82499c5c78d448849b4b44bf4775c64e, type: 3}
   _damageCount: 2
