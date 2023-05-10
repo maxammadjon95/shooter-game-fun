@@ -16,6 +16,7 @@ public class EnemyMoveController : MonoBehaviour
     [SerializeField] private float _shotRate = 0.3f;
     [SerializeField] private int _fireCount = 3;
     [SerializeField] private float _timeBetweenShots = 3f;
+    [SerializeField] private EnemyAnimationPlayer _animation;
 
     private bool _isChasing, _isWaitingForShot, _isShooting;
     private PlayerController _player;
@@ -98,16 +99,19 @@ public class EnemyMoveController : MonoBehaviour
     private void MoveToTarget()
     {
         _agent.destination = _targetPoint;
+        _animation.MoveAnimationPlay();
     }
 
     private void MoveToInitialPosition()
     {
         _agent.destination = _startPoint;
+        _animation.MoveAnimationPlay();
     }
 
     private void StopMoving()
     {
         _agent.destination = transform.position;
+        _animation.StopAndPlayIdle();
     }
 
     private void WaitAndGoToInitialPosition()
@@ -125,6 +129,8 @@ public class EnemyMoveController : MonoBehaviour
     private IEnumerator ShotCoroutine()
     {
         _isShooting = true;
+        _animation.ShotAnimationPlay();
+
         for (int i = 0; i < _fireCount; i++)
         {
             _gun.TryFire();
@@ -151,5 +157,13 @@ public class EnemyMoveController : MonoBehaviour
     {
         _justLostPlayer = false;
         _waitTweener?.Kill();
+    }
+
+    public void DontShot()
+    {
+        _shotContinuationTweener?.Kill();
+        StopCoroutine(ShotCoroutine());
+        _isShooting = false;
+        MoveToTarget();
     }
 }
