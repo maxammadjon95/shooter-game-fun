@@ -8,6 +8,13 @@ public class BulletController : MonoBehaviour
     [SerializeField] private int _damageCount = 1;
     [SerializeField] private PlayerType _playerType;
 
+    private PlayerController _player;
+
+    private void Start()
+    {
+        _player = PlayerController.instance;
+    }
+
     private void Update()
     {
         _rigidBody.velocity = transform.forward * _moveSpeed;
@@ -30,6 +37,7 @@ public class BulletController : MonoBehaviour
         if(_playerType == PlayerType.Enemy)
         {
             Debug.Log("Enemy Hitted Us");
+            _player.HealthSystem.DamagePlayer(_damageCount);
         }
 
         //Effect part
