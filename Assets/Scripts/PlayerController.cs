@@ -17,13 +17,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private Animator _animator;
     [SerializeField] private GunShooter _gunShooter;
-
+    [SerializeField] private PlayerHealthController _healthSystem;
 
     private Vector3 _moveInput;
 
     private bool _canJump, _canDoubleJump;
 
     public Transform CameraTransform => _cameraTransform;
+
+    public PlayerHealthController HealthSystem => _healthSystem;
 
     private void Awake()
     {
